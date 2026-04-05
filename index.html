@@ -2427,7 +2427,7 @@
 
         <a href="https://www.whatsapp.com/channel/0029VbBcyDEEquiHCTmOlS1D" target="_blank" class="text-[11px] text-white hover:text-yellow-400 flex items-center gap-1">
 
-            👥 Join Grup Support Jalur Langit dan bagikan info Habit Tracker (Bahan ada di grup)
+            👥 Join Grup Support Jalur Langit
 
         </a>
 
@@ -7624,28 +7624,6 @@
 
 
             <script>
-                if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log("PWA: Service Worker Terdaftar!"))
-    .catch((err) => console.log("PWA: Gagal daftar", err));
-}
-
-// Fungsi Panggil Notifikasi Tembus Lock Screen
-function kirimNotifikasiPWA(judul, pesan) {
-    if (Notification.permission === 'granted') {
-        navigator.serviceWorker.ready.then(registration => {
-            registration.showNotification(judul, {
-                body: pesan,
-                icon: 'https://i.postimg.cc/Wzn8GV6g/trac.png',
-                vibrate: [200, 100, 200],
-                badge: 'https://i.postimg.cc/Wzn8GV6g/trac.png',
-                tag: 'alarm-habit' // Biar notif nggak numpuk
-            });
-        });
-    } else {
-        Notification.requestPermission();
-    }
-}
                 let weeklyChart = null;
 
 
@@ -9323,7 +9301,7 @@ regForm.classList.add('hidden');
 }
 
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUlBOVpFvXKNHMabmO8S7FoxxQ2WiC8eTVe_UbvO2EzKv5a0B2H1VAa-Ne6JXyGwpE/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVli5DNsx81-Z-CcE2r3ZZxlXuVBtfrbMlVIZOGxTnBrViDE1M6KPGoS5UoUppcRqT/exec";
 async function handleRegisterSubmit() {
 const name = document.getElementById('regName').value.trim();
 const email = document.getElementById('regEmail').value.trim();
@@ -11140,240 +11118,62 @@ return `
 
 
 async function toggleHabit(habitId, dateStr) {
-
-
-
-
-
-
-
-  if (!currentUser) return;
-
-
-
-
-
-
-
-
-
-
-
-  // 1. Cari apakah data sudah ada di allData
-
-
-
-
-
-
-
-  const index = allData.findIndex(d => 
-
-
-
-
-
-
-
-    d.type === 'habit_completion' && 
-
-
-
-
-
-
-
-    d.pin === currentUser.pin && 
-
-
-
-
-
-
-
-    d.habit_id === habitId && 
-
-
-
-
-
-
-
-    d.habit_date === dateStr
-
-
-
-
-
-
-
-  );
-
-
-
-
-
-
-
-
-
-
-
-  if (index !== -1) {
-
-
-
-
-
-
-
-    // 2. Jika sudah ada, balikkan statusnya (toggle)
-
-
-
-
-
-
-
-    allData[index].completed = !allData[index].completed;
-
-
-
-
-
-
-
-  } else {
-
-
-
-
-
-
-
-    // 3. Jika belum ada, buat data baru
-
-
-
-
-
-
-
-    allData.push({
-
-
-
-
-
-
-
-      type: 'habit_completion',
-
-
-
-
-
-
-
-      pin: currentUser.pin,
-
-
-
-
-
-
-
-      habit_id: habitId,
-
-
-
-
-
-
-
-      habit_date: dateStr,
-
-
-
-
-
-
-
-      completed: true
-
-
-
-
-
-
-
-    });
-
-
-
-
-
-
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-  // 4. SIMPAN KE DATABASE (LocalStorage)
-
-
-
-
-
-
-
-  localStorage.setItem('jalurLangit_DB', JSON.stringify(allData));
-
-
-
-
-
-
-
-
-
-
-
-  // 5. Update tampilan secara langsung
-
-
-
-
-
-
-
-  renderHabits();
-
-
-
-
-
-
-
-  updateProgressMetrics();
-
-
-
-
-
-
-
+if (!currentUser) return;
+
+const index = allData.findIndex(d =>
+d.type === 'habit_completion' &&
+d.pin === currentUser.pin &&
+d.habit_id === habitId &&
+d.habit_date === dateStr
+);
+
+let isNowCompleted = false;
+
+if (index !== -1) {
+allData[index].completed = !allData[index].completed;
+isNowCompleted = allData[index].completed;
+} else {
+allData.push({
+type: 'habit_completion',
+pin: currentUser.pin,
+habit_id: habitId,
+habit_date: dateStr,
+completed: true
+});
+isNowCompleted = true;
 }
 
+saveToLocalStorage();
+renderHabits();
+updateProgressMetrics();
 
+// --- LOGIKA POIN ONLINE ---
+// Cek apakah habit masuk daftar premium
+const isPremium = premiumHabits.includes(habitId);
+
+if (isPremium) {
+// Jika dicentang (true) kasih +100, jika batal centang (false) kasih -100
+const pointValue = isNowCompleted ? 100 : -100;
+syncPointsToCloud(pointValue);
+}
+}
+
+async function syncPointsToCloud(pointsToAdd) {
+try {
+fetch(SCRIPT_URL, {
+method: "POST",
+mode: "no-cors", // Agar tidak error di beberapa browser
+body: JSON.stringify({
+action: "updatePoint",
+pin: currentUser.pin,
+points: pointsToAdd
+})
+});
+console.log("Poin disinkronkan: " + pointsToAdd);
+} catch (e) {
+console.log("Gagal sinkron poin ke langit.");
+}
+}
 
 
 
@@ -19537,127 +19337,43 @@ async function saveNewPin() {
 
 
 
-function renderLeaderboard() {
+async function renderLeaderboard() {
+    const container = document.getElementById('leaderboardList');
+    if (!container) return;
 
-const container = document.getElementById('leaderboardList');
+    container.innerHTML = '<p class="text-center text-xs text-gray-500 animate-pulse">Mengambil data klasemen dari langit...</p>';
 
-if (!container) return;
+    try {
+        const response = await fetch(SCRIPT_URL);
+        const leaderData = await response.json();
 
+        // Filter hanya user yang aktif
+        const activeLeaders = leaderData.filter(u => u.status === 'active');
 
-
-const users = allData.filter(d => d.type === 'user');
-
-
-
-let leaderData = users.map(user => {
-
-// --- LOGIKA POIN KHUSUS ---
-
-const userCompletions = allData.filter(d =>
-
-d.type === 'habit_completion' &&
-
-d.pin === user.pin &&
-
-d.completed === true
-
-);
-
-
-
-// Hanya hitung jika ID habit ada di daftar premiumHabits
-
-let totalPoints = 0;
-
-userCompletions.forEach(comp => {
-
-if (premiumHabits.includes(comp.habit_id)) {
-
-totalPoints += 100; // Tambah 100 poin per habit premium
-
+        container.innerHTML = activeLeaders.map((p, i) => `
+            <div class="flex items-center justify-between p-4 rounded-xl border ${p.pin === currentUser?.pin ? 'border-yellow-500 bg-yellow-500/20 shadow-[0_0_15px_rgba(255,215,0,0.2)]' : 'border-white/5 bg-slate-800/40'} leaderboard-item">
+                <div class="flex items-center gap-3">
+                    <span class="font-bold text-lg ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-orange-400' : 'text-gray-600'}">
+                        ${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i + 1)}
+                    </span>
+                    <div class="flex flex-col">
+                        <span class="text-white font-medium">${p.name} ${p.pin === currentUser?.pin ? '<span class="text-[10px] bg-yellow-500 text-black px-1 rounded ml-1">ANDA</span>' : ''}</span>
+                        <span class="text-[9px] text-gray-500 uppercase tracking-widest">Istiqomah Level ${Math.floor(p.points/1000) + 1}</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-yellow-400 font-bold text-xl">${p.points.toLocaleString()}</span>
+                    <span class="text-[8px] text-gray-500 block uppercase font-bold">Poin Berkah</span>
+                </div>
+            </div>
+        `).join('');
+    } catch (e) {
+        container.innerHTML = '<p class="text-center text-red-400 text-xs">Gagal memuat klasemen. Cek koneksi.</p>';
+    }
 }
-
-});
-
-// --------------------------
-
-
-
-const settings = allData.find(d => d.type === 'settings' && d.pin === user.pin);
-
-const displayName = settings?.display_name || user.name;
-
-
-
-return {
-
-name: displayName,
-
-points: totalPoints,
-
-pin: user.pin
-
-};
-
-});
-
-
-
-// Urutkan Poin Terbesar ke Terkecil
-
-leaderData.sort((a, b) => b.points - a.points);
-
-
-
-// Render ke HTML (sama seperti sebelumnya)
-
-container.innerHTML = leaderData.map((p, i) => `
-
-<div
-
-    class="flex items-center justify-between p-4 rounded-xl border ${p.pin === currentUser?.pin ? 'border-yellow-500 bg-yellow-500/10' : 'border-white/5 bg-slate-800/40'}">
-
-    <div class="flex items-center gap-3">
-
-        <span class="font-bold ${i < 3 ? 'text-yellow-400' : 'text-gray-500'}">#${i + 1}</span>
-
-        <span class="text-white">${p.name} ${p.pin === currentUser?.pin ? '⭐' : ''}</span>
-
-    </div>
-
-    <div class="text-right">
-
-        <span class="text-yellow-400 font-bold">${p.points.toLocaleString()}</span>
-
-        <span class="text-[9px] text-gray-500 block uppercase">Poin Berkah</span>
-
-    </div>
-
-</div>
-
-`).join('');
-
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
     // DEVELOPER MODE FUNCTIONS
-
-
-
-
-
-
 
     function showDeveloperMode() {
 
