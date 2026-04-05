@@ -7624,6 +7624,28 @@
 
 
             <script>
+                if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log("PWA: Service Worker Terdaftar!"))
+    .catch((err) => console.log("PWA: Gagal daftar", err));
+}
+
+// Fungsi Panggil Notifikasi Tembus Lock Screen
+function kirimNotifikasiPWA(judul, pesan) {
+    if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(registration => {
+            registration.showNotification(judul, {
+                body: pesan,
+                icon: 'https://i.postimg.cc/Wzn8GV6g/trac.png',
+                vibrate: [200, 100, 200],
+                badge: 'https://i.postimg.cc/Wzn8GV6g/trac.png',
+                tag: 'alarm-habit' // Biar notif nggak numpuk
+            });
+        });
+    } else {
+        Notification.requestPermission();
+    }
+}
                 let weeklyChart = null;
 
 
