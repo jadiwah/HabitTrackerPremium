@@ -8679,77 +8679,28 @@ function saveToLocalStorage() {
     }
 
 function triggerAlarmAction(title, type) {
+    // 1. Jalankan Notifikasi Browser duluan
+    if ("Notification" in window && Notification.permission === "granted") {
+        new Notification(`Habit Tracker Jalur Langit: ${type}`, {
+            body: `Sudah lakukan : ${title} nak?`,
+            icon: "https://i.postimg.cc/Wzn8GV6g/trac.png"
+        });
+    }
 
+    // 2. Jalankan Getar (Vibrate)
+    if ("vibrate" in navigator) {
+        navigator.vibrate([500, 200, 500]);
+    }
 
+    // 3. Jalankan Suara
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+    audio.play().catch(e => console.log("Audio blocked"));
 
-// 1. Getar (Jika di HP)
-
-
-
-if ("vibrate" in navigator) navigator.vibrate([500, 200, 500]);
-
-
-
-
-
-
-
-// 2. Notifikasi Browser
-
-
-
-if ("Notification" in window && Notification.permission === "granted") {
-
-
-
-new Notification(`Habit Tracker Jalur Langit by @ferdiansyah_ypf: ${type}`, {
-
-
-
-body: `Sudah lakukan  : ${title} nak?`,
-
-
-
-icon: "https://i.postimg.cc/Wzn8GV6g/trac.png"
-
-
-
-});
-
-
-
-}
-
-
-
-
-
-
-
-// 3. Suara (Opsional: Kamu bisa ganti link ini dengan file mp3 kamu)
-
-
-
-const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-
-
-
-audio.play().catch(e => console.log("Audio play blocked by browser. User must interact first."));
-
-
-
-
-
-
-
-// 4. Pesan Layar
-
-
-
-alert(`⏰ ${type.toUpperCase()}\n\nSekarang Waktunya: ${title}`);
-
-
-
+    // 4. Kasih jeda sedikit (misal 500ms) baru munculkan Alert/Pop-up
+    // Biar sistem punya waktu buat nampilin notifikasi di atas
+    setTimeout(() => {
+        alert(`⏰ ${type.toUpperCase()}\n\nSekarang Waktunya: ${title}`);
+    }, 500);
 }
 
 
