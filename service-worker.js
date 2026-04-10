@@ -27,3 +27,10 @@ self.addEventListener('push', (event) => {
         self.registration.showNotification('Jalur Langit Reminders', options)
     );
 });
+
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close(); // Tutup notifikasi saat diklik
+    event.waitUntil(
+        clients.openWindow('/') // Buka aplikasi Jalur Langit saat notif diklik
+    );
+});
