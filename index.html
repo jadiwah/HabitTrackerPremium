@@ -9132,7 +9132,6 @@ function resetRegisterForm() {
         
         <div class="space-y-4">
             <input type="text" id="regName" placeholder="Nama Lengkap" class="input-field w-full px-4 py-2 rounded-xl text-sm">
-            
             <input type="password" id="regPin" maxlength="6" inputmode="numeric" placeholder="Buat PIN (6 Angka)" class="input-field w-full px-4 py-2 rounded-xl text-center tracking-widest text-sm">
         </div>
 
@@ -9145,30 +9144,16 @@ function resetRegisterForm() {
             Kirim Data Aktivasi 🚀
         </button>
     `;
-}
-
-
-
-// 2. Sembunyikan form register, tampilkan form login
-
-toggleAuthMode('login');
-}
+    
+    // 2. Alihkan halaman langsung ke login
+    toggleAuthMode('login');
+} // Penutup fungsi resetRegisterForm yang sah, TIDAK BOLEH ada } ganda di bawahnya!
 
 function forceBackToLogin() {
-
-// Cara ini akan memaksa browser memuat ulang dari awal tanpa cache
-
-// Dijamin ampuh untuk OneCompiler/Browser HP
-
-window.location.href = window.location.href.split('#')[0];
-
+    // Memaksa browser memuat ulang dari awal tanpa cache
+    window.location.href = window.location.href.split('#')[0];
 }
-
     function copyWebsiteLink() {
-
-
-
-
 
 
 
