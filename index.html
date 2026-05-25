@@ -8868,7 +8868,7 @@ const pinInput = document.getElementById('pinInput').value.trim();
 const errorEl = document.getElementById('loginError');
 
 if (!pinInput) {
-alert("Masukkan PIN dulu, Fer!");
+alert("Masukkan PIN dulu!");
 return;
 }
 
@@ -8996,160 +8996,6 @@ const audio = document.getElementById('alarmAudio');
     // Panggil fungsi ini tepat setelah user berhasil Login
 
 
-
-
-
-
-
-    // Cari user di data
-
-
-
-
-
-
-
-    let user = allData.find(d => d.type === 'user' && d.pin === pin);
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-    if (!user) {
-
-
-
-
-
-
-
-        errorEl.textContent = '❌ PIN tidak ditemukan';
-
-
-
-
-
-
-
-        errorEl.classList.remove('hidden');
-
-
-
-
-
-
-
-        return;
-
-
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-    if (user.status === 'inactive') {
-
-
-
-
-
-
-
-        errorEl.textContent = '🚫 Akun dinonaktifkan Admin';
-
-
-
-
-
-
-
-        errorEl.classList.remove('hidden');
-
-
-
-
-
-
-
-        return;
-
-
-
-
-
-
-
-    }
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-    currentUser = user;
-
-
-
-
-
-
-
-    sessionStorage.setItem('currentUserPin', pin);
-
-
-
-
-
-
-
-    errorEl.classList.add('hidden');
-
-
-
-
-
-
-
-    showMainApp();
-
-
-
-
-
-
-
-}
 
 function toggleAuthMode(mode) {
 
@@ -9306,10 +9152,7 @@ function resetRegisterForm() {
 // 2. Sembunyikan form register, tampilkan form login
 
 toggleAuthMode('login');
-
-
-
-
+}
 
 function forceBackToLogin() {
 
