@@ -1,20 +1,24 @@
 {
-  "name": "Habit Tracker Jalur Langit",
   "short_name": "JalurLangit",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#FFD700",
+  "name": "Habit Tracker Jalur Langit Premium",
+  "description": "Aplikasi produktivitas dan evaluasi ibadah harian Jalur Langit.",
   "icons": [
     {
       "src": "https://i.postimg.cc/Wzn8GV6g/trac.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "https://i.postimg.cc/Wzn8GV6g/trac.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "start_url": "index.html",
+  "background_color": "#0f172a",
+  "theme-color": "#0f172a",
+  "display": "standalone",
+  "orientation": "portrait"
 }
