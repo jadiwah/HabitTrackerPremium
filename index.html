@@ -9038,50 +9038,51 @@ regForm.classList.add('hidden');
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVli5DNsx81-Z-CcE2r3ZZxlXuVBtfrbMlVIZOGxTnBrViDE1M6KPGoS5UoUppcRqT/exec";
 async function handleRegisterSubmit() {
-const name = document.getElementById('regName').value.trim();
-const email = document.getElementById('regEmail').value.trim();
-const wa = document.getElementById('regWA').value.trim();
-const domisili = document.getElementById('regDomisili').value.trim();
-const ig = document.getElementById('regIG').value.trim();
-const pin = document.getElementById('regPin').value.trim();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const wa = document.getElementById('regWA').value.trim();
+    const domisili = document.getElementById('regDomisili').value.trim();
+    const ig = document.getElementById('regIG').value.trim();
+    const pin = document.getElementById('regPin').value.trim();
 
-if (!name || !email || !wa || !domisili || !ig || !pin) {
-alert("Mohon lengkapi semua data!");
-return;
-}
+    if (!name || !pin) {
+        alert("Mohon lengkapi Nama dan PIN Anda!");
+        return;
+    }
 
-const newUser = { action: "register", pin, name, email, wa, domisili, ig };
+    const newUser = { action: "register", pin, name, email, wa, domisili, ig };
 
-// 1. KIRIM KE GOOGLE SHEETS
-try {
-await fetch(SCRIPT_URL, {
-method: "POST",
-body: JSON.stringify(newUser)
-});
+    // 1. PROSES KIRIM KE GOOGLE SHEETS
+    try { 
+        await fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify(newUser)
+        });
 
-// 2. TAMPILKAN RINGKASAN & LINK WA (Tetap Ada)
-const pesanWA = `Halo Admin, saya sudah daftar Habit Tracker Jalur Langit.%0A%0A` +
-`📝 *Data Pendaftaran:*%0A` +
-`- Nama: ${encodeURIComponent(name)}%0A` +
-`- PIN: ${pin}%0A` +
-`Mohon segera diaktifkan ya Admin.`;
+        // 2. TAMPILKAN RINGKASAN & LINK WA JIKA SUKSES
+        const pesanWA = `Halo Admin, saya sudah daftar Habit Tracker Jalur Langit.%0A%0A` +
+        `📝 *Data Pendaftaran:*%0A` +
+        `- Nama: ${encodeURIComponent(name)}%0A` +
+        `- PIN: ${pin}%0A` +
+        `Mohon segera diaktifkan ya Admin.`;
 
-const waLink = `https://api.whatsapp.com/send?phone=6289637709173&text=${pesanWA}`;
+        const waLink = `https://api.whatsapp.com/send?phone=6285748110997&text=${pesanWA}`;
 
-document.getElementById('registerForm').innerHTML = `
-<div class="text-center space-y-4 py-4" style="color: white;">
-    <h3 class="text-xl font-bold text-yellow-400">Pendaftaran Terkirim!</h3>
-    <p class="text-xs">Data kamu sudah tersimpan di database admin.</p>
-    <a href="${waLink}" target="_blank"
-        class="btn-golden block py-3 rounded-xl font-bold mx-4 no-underline text-center">
-        💬 Lapor Admin via WA
-    </a>
-    <button onclick="location.reload()" class="text-xs text-blue-400 underline">Kembali ke Login</button>
-</div>
-`;
-} catch (e) {
-alert("Gagal terhubung ke database. Cek koneksi internet.");
-}
+        document.getElementById('registerForm').innerHTML = `
+        <div class="text-center space-y-4 py-4" style="color: white;">
+            <h3 class="text-xl font-bold text-yellow-400">Pendaftaran Terkirim!</h3>
+            <p class="text-xs">Data kamu sudah tersimpan di database admin.</p>
+            <a href="${waLink}" target="_blank"
+                class="btn-golden block py-3 rounded-xl font-bold mx-4 no-underline text-center">
+                💬 Lapor Admin via WA
+            </a>
+            <button onclick="location.reload()" class="text-xs text-blue-400 underline">Kembali ke Login</button>
+        </div>
+        `;
+    } catch (e) {
+        console.error(e);
+        alert("Gagal terhubung ke database. Cek koneksi internet.");
+    }
 }
 
 
