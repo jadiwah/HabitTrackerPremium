@@ -9286,30 +9286,26 @@ regForm.innerHTML = `
 }
 
 function resetRegisterForm() {
+    // 1. Kembalikan isi div registerForm ke HTML aslinya dengan field minimalis
+    document.getElementById('registerForm').innerHTML = `
+        <h3 class="text-lg font-bold text-yellow-400 mb-2">Registrasi User Baru</h3>
+        
+        <div class="space-y-4">
+            <input type="text" id="regName" placeholder="Nama Lengkap" class="input-field w-full px-4 py-2 rounded-xl text-sm">
+            
+            <input type="password" id="regPin" maxlength="6" inputmode="numeric" placeholder="Buat PIN (6 Angka)" class="input-field w-full px-4 py-2 rounded-xl text-center tracking-widest text-sm">
+        </div>
 
-// 1. Kembalikan isi div registerForm ke HTML aslinya
+        <input type="hidden" id="regEmail" value="-">
+        <input type="hidden" id="regWA" value="-">
+        <input type="hidden" id="regIG" value="-">
+        <input type="hidden" id="regDomisili" value="-">
 
-document.getElementById('registerForm').innerHTML = `
-
-<h3 class="text-lg font-bold text-yellow-400">Registrasi User Baru</h3>
-
-<input type="text" id="regName" placeholder="Nama Lengkap" class="input-field w-full px-4 py-2 rounded-xl text-sm">
-
-<input type="email" id="regEmail" placeholder="Email Aktif" class="input-field w-full px-4 py-2 rounded-xl text-sm">
-
-<input type="tel" id="regWA" placeholder="Nomor WA (628...)" class="input-field w-full px-4 py-2 rounded-xl text-sm">
-
-<input type="text" id="regIG" placeholder="Username Instagram" class="input-field w-full px-4 py-2 rounded-xl text-sm">
-
-<input type="text" id="regDomisili" placeholder="Asal Domisili" class="input-field w-full px-4 py-2 rounded-xl text-sm">
-
-<input type="password" id="regPin" maxlength="6" placeholder="Buat PIN" class="input-field w-full px-4 py-2 rounded-xl text-center tracking-widest">
-
-<button onclick="handleRegisterSubmit()" class="btn-golden w-full py-3 rounded-xl font-bold">Kirim Data Aktivasi 🚀</button>
-
-
-
-`;
+        <button onclick="handleRegisterSubmit()" class="btn-golden w-full py-3 rounded-xl font-bold mt-4">
+            Kirim Data Aktivasi 🚀
+        </button>
+    `;
+}
 
 
 
