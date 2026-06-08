@@ -22,3 +22,13 @@
   "display": "standalone",
   "orientation": "portrait"
 }
+ "screenshots": [
+    {
+      "src": "./screenshot-mobile.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tampilan Utama Habit Tracker Ikhtiarqu"
+    }
+  ]
+}
