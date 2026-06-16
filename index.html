@@ -7618,9 +7618,12 @@
             <script>
                 // Daftarkan Service Worker
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log("PWA: Service Worker Terdaftar!"))
-    .catch((err) => console.log("PWA: Gagal daftar", err));
+    window.addEventListener('load', () => {
+        // Pastikan nama filenya service-worker.js, bukan sw.js
+        navigator.serviceWorker.register('service-worker.js') 
+            .then(reg => console.log('PWA Berjaya!', reg.scope))
+            .catch(err => console.error('PWA Gagal:', err));
+    });
 }
 
 // Fungsi Panggil Notifikasi Tembus Lock Screen
