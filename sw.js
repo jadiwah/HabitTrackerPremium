@@ -1,13 +1,43 @@
-const CACHE_NAME = 'jalur-langit-v1';
-const assets = ['index.html', 'manifest.json'];
+const CACHE_NAME = 'habit-tracker-v1';
+const assets = [
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
+];
 
 // Install Service Worker
 self.addEventListener('install', (e) => {
-    e.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(assets);
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(assets);
+    })
+  );
+});
+
+// Aktivasi & Hapus Cache Lama
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
         })
-    );
+      );
+    })
+  );
+});
+
+// Strategi Fetch (Network First, Fallback to Cache)
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    fetch(e.request).catch(() => {
+      return caches.match(e.request);
+    })
+  );
 });
 
 // Trigger Notifikasi dari Background
