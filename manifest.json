@@ -1,9 +1,9 @@
 {
-  "id": "/HabitTrackerJalurLangitPremium/",
+  "id": "./",
   "name": "Habit Tracker Jalur Langit",
-  "short_name": "Habit Tracker",
-  "description": "Aplikasi Pelacak Kebiasaan Harian Presisi",
-  "start_url": "index.html",
+  "short_name": "HabitTracker",
+  "description": "Pelacak Kebiasaan Presisi",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#111a2e",
   "theme_color": "#b48a04",
