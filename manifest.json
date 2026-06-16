@@ -1,11 +1,9 @@
 {
     "id": "/HabitTrackerJalurLangitPremium/",
-  "short_name": "JalurLangit",
-  "name": "Habit Tracker Jalur Langit Premium",
-  "description": "Aplikasi produktivitas dan evaluasi ibadah harian Jalur Langit.",
+  "name": "Habit Tracker - Produktivitas harian",
+  "short_name": "Habit Tracker",
+  "description": "Aplikasi Pelacak Kebiasaan Harian Presisi",
   "start_url": "index.html",
-  "background_color": "#0f172a",
-  "theme-color": "#0f172a",
   "display": "standalone",
   "orientation": "portrait"
   "icons": [
