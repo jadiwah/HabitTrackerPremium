@@ -1,11 +1,13 @@
 {
-    "id": "/HabitTrackerJalurLangitPremium/",
-  "name": "Habit Tracker - Produktivitas harian",
+  "id": "/HabitTrackerJalurLangitPremium/",
+  "name": "Habit Tracker - Produktivitas Harian",
   "short_name": "Habit Tracker",
-  "description": "Aplikasi Pelacak Kebiasaan Harian Presisi",
-  "start_url": "index.html",
+  "description": "Aplikasi Pelacak Kebiasaan Harian Presisi Jalur Langit",
+  "start_url": "./index.html",
   "display": "standalone",
-  "orientation": "portrait"
+  "background_color": "#111a2e",
+  "theme_color": "#b48a04",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "./icon-192.png",
@@ -20,4 +22,13 @@
       "purpose": "any"
     }
   ],
-
+  "screenshots": [
+    {
+      "src": "./screenshot-mobile.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tampilan Utama Habit Tracker"
+    }
+  ]
+}
